@@ -11,7 +11,7 @@ void nextline(FILE *f){
 int nextcharcheck(FILE *f){	//checks for EOF
 	char c;
 	c = fgetc(f);
-	if(c == EOF){
+	if(c == EOF || c == '!'){
 		return(1);
 	}else{
 		fseek(f,-1,SEEK_CUR);
@@ -39,35 +39,61 @@ void readandwrite(int c, FILE *input_file, FILE *output_file){
 	}
 }
 
+void taginputendlines(FILE *f){
+	fseek(f,-26,SEEK_END);
+	fputc('!',f);
+	rewind(f);
+}
+
 int main(){
 	
-	FILE *fi;
-	FILE *fo;
+	FILE *f_input;
+	FILE *f_open;
+	FILE *f_high;
+	FILE *f_low;
+	FILE *f_close;
+
 	int i = 0;
 	int ii = 0;
 
-	fi = fopen("input.txt","r");
-	fo = fopen("output.txt","w+");
+	f_input = fopen("input.txt","r+");
+	f_open = fopen("output_open.txt","w+");
+	f_high = fopen("output_high.txt","w+");
+	f_low = fopen("output_low.txt","w+");
+	f_close = fopen("output_close.txt","w+");
 	
-	skiplines(fi,15);
+	taginputendlines(f_input);
+	skiplines(f_input,15);
 
 	while(ii < 1){
-		ii = nextcharcheck(fi);
+		ii = nextcharcheck(f_input);
 		switch(ii){
 			case 0:
-				fseek(fi,41,SEEK_CUR);	//41 for opens
-				readandwrite(7,fi,fo);
+				fseek(f_input,41,SEEK_CUR);	//41 for opens
+				readandwrite(7,f_input,f_open);
+				fputc('\n',f_open);
 
-				fputc('\n',fo);
-				nextline(fi);
+				fseek(f_input,9,SEEK_CUR);
+				readandwrite(7,f_input,f_high);
+				fputc('\n',f_high);
+
+				fseek(f_input,9,SEEK_CUR);
+				readandwrite(7,f_input,f_low);
+				fputc('\n',f_low);
+
+				fseek(f_input,9,SEEK_CUR);
+				readandwrite(7,f_input,f_close);
+				fputc('\n',f_close);
+
+				nextline(f_input);
 				break;
 			case 1:
 				break;
 		}
 	}
 
-	fclose(fi);
-	fclose(fo);
+	fclose(f_input);
+	fclose(f_open);
 	return(ii);
 }
 
