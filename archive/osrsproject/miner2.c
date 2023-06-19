@@ -21,18 +21,21 @@ int mine(int interval, int dt){
 int drop(){
 	int i=0;
 	int j=0;
+	int dt=0;
 	printf("~dropping load~\n");
 	for(i;i<6;i++){
 		keybd_event(VK_SHIFT,0x10,KEYEVENTF_EXTENDEDKEY,0);	//PRESS SHIFT
 		for(j;j<4;j++){
-			Sleep(250);
+			Sleep(250 + 100*(dt % 3));
 			mouse_event(MOUSEEVENTF_MOVE|MOUSEEVENTF_ABSOLUTE,56868+j*1903,46810+i*2615,0,0);	//šoup
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);		//KLIK
+			dt++;
 		}
 		j=0;
 	}
 	keybd_event(VK_SHIFT,0x10,KEYEVENTF_EXTENDEDKEY|KEYEVENTF_KEYUP,0);		//RELEASE SHIFT
+	dt=0;
 	i=0;
 	return(0);
 }			
@@ -59,8 +62,12 @@ int main(){
 		while(!GetAsyncKeyState(0x75)){	//F6 UNPRESSED
 			printf("commencing mining: ");
 			for(n;n<count;n++){		//MINING FOR LOOP
+				if(GetAsyncKeyState(0x75)){
+				n=count;
+				}	//efektivne vypne mining forloop
 				mine(interval,dt);
 				dt++;
+				n++;
 			}
 			drop();	//DROP IT (all inventory except first row)
 			n=0;
