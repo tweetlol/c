@@ -55,18 +55,18 @@ int main(){
 		printf("Unable to open display.\n");
 		return(1);
 	}
-	int interval,count;
 	Window rootWindow = DefaultRootWindow(screen);
-
-//	find the RL window by CLICKING IT
+	Window targetWindow;
 	XEvent event;
+	printf("load screen var, rootWindow var, proceeding to grabbing a pointer and waiting for event"\n);
+//	find the RL window by CLICKING IT
 	XGrabPointer(screen,rootWindow,False,ButtonPressMask,GrabModeAsync,GrabModeAsync,None,None,CurrentTime);
 	XNextEvent(screen,&event);
 
-	Window targetWindow = event.xbutton.subwindow;
+	targetWindow = event.xbutton.subwindow;
 	if(targetWindow == None){
 		targetWindow = event.xbutton.window;
-		printf("targetWindow set to %u\n",targetWindow);
+		printf("targetWindow set to %lu\n",targetWindow);
 	}
 	XUngrabPointer(screen,CurrentTime);
 	printf("ungrabbing pointer\n");
