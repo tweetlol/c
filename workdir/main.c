@@ -66,9 +66,10 @@ int main(){
 	Window targetWindow = event.xbutton.subwindow;
 	if(targetWindow == None){
 		targetWindow = event.xbutton.window;
+		printf("targetWindow set to %u\n",targetWindow);
 	}
 	XUngrabPointer(screen,CurrentTime);
-
+	printf("ungrabbing pointer\n");
 //	prints window attributes and id for checks, 
 	FindUI(screen,targetWindow);
 	printf("sleeping for a second, then bagdropping\n");
