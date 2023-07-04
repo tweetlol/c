@@ -124,7 +124,7 @@ void Bank(Display *screen,Window targetWindow){
 void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	int i = 0;
 
-	XWarpPointer(screen,None,targetWindow,0,0,0,0,166,363);	//furnace coordinates
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,166,363);	//furnace coordinates when standing at east bank counter
 	XFlush(screen);
 	sleep(1);
 	Click(screen);
@@ -136,8 +136,8 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	XFlush(screen);
 	sleep(2);	//first spacebar smelt
 
-	while(i<11){
-		XWarpPointer(screen,None,targetWindow,0,0,0,0,363,281);
+	while(i<5){
+		XWarpPointer(screen,None,targetWindow,0,0,0,0,369,279);	//furnace coordinates when standing next to it
 		usleep(123654);
 		Click(screen);
 		XTestFakeKeyEvent(screen,space,True,0);
@@ -145,7 +145,7 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 		usleep(137186);
 		XTestFakeKeyEvent(screen,space,False,0);
 		XFlush(screen);
-		sleep(2);
+		sleep(10);
 	}	//repeatedly clicks furnace in case of levelup interruptions
 
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,582,188);
