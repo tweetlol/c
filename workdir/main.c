@@ -85,6 +85,72 @@ void Woodcut(Display *screen,Window targetWindow){
 		i++;
 	}
 }
+//edgeville smelting Bank
+void Bank(Display *screen,Window targetWindow){
+	int i = 0;
+	int j = 0;
+	int delta = 0;
+
+	XFlush(screen);
+	while(i<3){
+		while(j<6){
+			XWarpPointer(screen,None,targetWindow,0,0,0,0,595+i*40,270+j*41);
+			usleep(112369 * (1+delta));
+			delta = Dt(delta);
+			printf("banking slot %ix%i\n",i,j);
+			j++;
+			XFlush(screen);
+			Click(screen);
+		}
+		j=0;
+		i++;
+	}
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,93,133);	//slot at 0x0
+	XFlush(screen);
+	Click(screen);
+	sleep(0.1);
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,139,133);	//slot at 0x1
+	XFlush(screen);
+	Click(screen);
+	sleep(0.1);
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,490,55);
+	XFlush(screen);
+	Click(screen);	//this click closes bank interface
+}
+//edgeville smelting Smelt
+void Smelt(Display *screen,Window targetWindow,KeyCode space){
+	int i = 0;
+
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,117,369);
+	XFlush(screen);
+	Click(screen);
+	sleep(10);	//walks to furnace for 10 sec
+	XTestFakeKeyEvent(screen,space,True,0);
+	XFlush(screen);
+	sleep(0.1);
+	XTestFakeKeyEvent(screen,space,False,0);
+	XFlush(screen);
+	sleep(2);	//first spacebar smelt
+
+	while(i<11){
+		XWarpPointer(screen,None,targetWindow,0,0,0,0,363,281);
+		XFlush(screen);
+		Click(screen);
+		sleep(0.2);
+		XTestFakeKeyEvent(screen,space,True,0);
+		XFlush(screen);
+		sleep(0.1);
+		XTestFakeKeyEvent(screen,space,False,0);
+		XFlush(screen);
+		sleep(2);
+	}	//repeatedly clicks furnace in case of levelup interruptions
+
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,582,188);
+	XFlush(screen);
+	Click(screen);
+	sleep(10);	//walks back to bank for 10 sec and opens bank interface when there
+}
+
 
 //THE INT MAIN
 int main(){
@@ -99,6 +165,8 @@ int main(){
 	Window targetWindow;
 	XEvent event;
 	KeyCode shift = XKeysymToKeycode(screen,XK_Shift_L);
+	KeyCode space = XKeysymToKeycode(screen,XK_space);
+
 
 //	find the RL window by CLICKING IT
 	printf("Click the target Runelite window...\n");
@@ -113,8 +181,10 @@ int main(){
 
 //	prints window attributes and id for checks, 
 	FindUI(screen,targetWindow);
+	printf("###############################");
 	sleep(1);
-	printf("1: mining (4sec, 20cycles, North+West)\n2: woodcutting(10+sec, 20cycles, North)\n);
+	printf("1: mining (4sec, 20cycles, North+West)\n2: woodcutting(10+sec, 20cycles, North)\n");
+	printf("3: edgeville smelting (leave only resources tab open, X = 14)\n");
 	scanf("%i",&run);
 	switch(run){
 	case 1:
@@ -124,8 +194,13 @@ int main(){
 	 	}
 	case 2:
 		while(1){
-			Mine(screen,targetWindow);
+			Woodcut(screen,targetWindow);
 			DropBag(screen,targetWindow,shift);
+		}
+	case 3:
+		while(1){
+			Bank(screen,targetWindow);
+			Smelt(screen,targetWindow,space);
 		}
 	}
 	XCloseDisplay(screen);
