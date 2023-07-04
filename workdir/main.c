@@ -12,12 +12,14 @@ int Dt(int delta){
 //clicks the screen (and unclicks)
 void Click(Display *screen){
 	usleep(5000);
-	XTestFakeButtonEvent(screen,Button1,True,0);
 	XFlush(screen);
 	usleep(10000);
-	XTestFakeButtonEvent(screen,Button1,False,0);
+	XTestFakeButtonEvent(screen,Button1,True,0);
+	usleep(10000);
 	XFlush(screen);
+	XTestFakeButtonEvent(screen,Button1,False,0);
 	usleep(5000);
+	XFlush(screen);
 }
 //window-size check
 void FindUI(Display* screen,Window targetWindow){
@@ -105,25 +107,26 @@ void Bank(Display *screen,Window targetWindow){
 		j=0;
 		i++;
 	}
-	XWarpPointer(screen,None,targetWindow,0,0,0,0,93,133);	//slot at 0x0
-	XFlush(screen);
+	sleep(1);
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,90,133);	//slot at 0x0
+	usleep(132356);
 	Click(screen);
-	XFlush(screen);
 	sleep(1);
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,139,133);	//slot at 0x1
-	XFlush(screen);
+	usleep(135648);
 	Click(screen);
 	sleep(1);
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,490,55);
-	XFlush(screen);
+	usleep(127895);
 	Click(screen);	//this click closes bank interface
 }
 //edgeville smelting Smelt
 void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	int i = 0;
 
-	XWarpPointer(screen,None,targetWindow,0,0,0,0,117,369);
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,125,380);
 	XFlush(screen);
+	sleep(1);
 	Click(screen);
 	sleep(10);	//walks to furnace for 10 sec
 	XTestFakeKeyEvent(screen,space,True,0);
@@ -135,9 +138,8 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 
 	while(i<11){
 		XWarpPointer(screen,None,targetWindow,0,0,0,0,363,281);
-		XFlush(screen);
+		usleep(123654);
 		Click(screen);
-		sleep(0.2);
 		XTestFakeKeyEvent(screen,space,True,0);
 		XFlush(screen);
 		usleep(137186);
@@ -147,7 +149,7 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	}	//repeatedly clicks furnace in case of levelup interruptions
 
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,582,188);
-	XFlush(screen);
+	sleep(1);
 	Click(screen);
 	sleep(10);	//walks back to bank for 10 sec and opens bank interface when there
 }
