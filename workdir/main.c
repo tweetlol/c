@@ -108,11 +108,12 @@ void Bank(Display *screen,Window targetWindow){
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,93,133);	//slot at 0x0
 	XFlush(screen);
 	Click(screen);
-	sleep(0.1);
+	XFlush(screen);
+	sleep(1);
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,139,133);	//slot at 0x1
 	XFlush(screen);
 	Click(screen);
-	sleep(0.1);
+	sleep(1);
 	XWarpPointer(screen,None,targetWindow,0,0,0,0,490,55);
 	XFlush(screen);
 	Click(screen);	//this click closes bank interface
@@ -127,7 +128,7 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	sleep(10);	//walks to furnace for 10 sec
 	XTestFakeKeyEvent(screen,space,True,0);
 	XFlush(screen);
-	sleep(0.1);
+	usleep(117368);
 	XTestFakeKeyEvent(screen,space,False,0);
 	XFlush(screen);
 	sleep(2);	//first spacebar smelt
@@ -139,7 +140,7 @@ void Smelt(Display *screen,Window targetWindow,KeyCode space){
 		sleep(0.2);
 		XTestFakeKeyEvent(screen,space,True,0);
 		XFlush(screen);
-		sleep(0.1);
+		usleep(137186);
 		XTestFakeKeyEvent(screen,space,False,0);
 		XFlush(screen);
 		sleep(2);
@@ -181,7 +182,7 @@ int main(){
 
 //	prints window attributes and id for checks, 
 	FindUI(screen,targetWindow);
-	printf("###############################");
+	printf("###############################\n");
 	sleep(1);
 	printf("1: mining (4sec, 20cycles, North+West)\n2: woodcutting(10+sec, 20cycles, North)\n");
 	printf("3: edgeville smelting (leave only resources tab open, X = 14)\n");
