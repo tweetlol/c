@@ -124,7 +124,7 @@ void Bank(Display *screen,Window targetWindow){
 void Smelt(Display *screen,Window targetWindow,KeyCode space){
 	int i = 0;
 
-	XWarpPointer(screen,None,targetWindow,0,0,0,0,125,380);
+	XWarpPointer(screen,None,targetWindow,0,0,0,0,166,363);	//furnace coordinates
 	XFlush(screen);
 	sleep(1);
 	Click(screen);
